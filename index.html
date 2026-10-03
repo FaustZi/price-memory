@@ -233,7 +233,6 @@ footer {
 ol { padding-left: 1.4rem; margin: 0; display: flex; flex-direction: column; gap: 0.45rem; }
 table.predictions { min-width: 36rem; }
 table.predictions td:first-child { width: 36%; }
-
 /* Standalone page: the hosting skeleton's reset, plus print layout for the PDF. */
 html, body { margin: 0; }
 body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -248,6 +247,8 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   table { font-size: 8.5pt; }
   figure, tr, li { break-inside: avoid; }
   h2, h3 { break-after: avoid; }
+  .defs div { break-inside: avoid; }
+  section[aria-labelledby="s7"] > p { break-after: avoid; }
 }
 </style>
 </head>
@@ -269,16 +270,18 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
 <section class="summary" aria-labelledby="summary-h">
   <h2 id="summary-h">Summary</h2>
-  <p><strong>Question.</strong> Traders see price stop at old highs and lows it has not traded through, and run through stretches where little has traded. Do large one-way moves in ES futures really start more often from such prices than from others at the same time, and can those prices be read in advance from the price's own history?</p>
-  <p><strong>Answer.</strong> Yes, by a few percentage points, and from places where a large move can be captured rather than from its exact origin.</p>
+  <p><strong>Question.</strong> Traders see price stop at old highs and lows it has not traded through, and run through stretches where little has traded. Do large one-way moves in ES futures start, or resume after a pullback, more often at some prices than at others at the same time? And can those prices be read in advance from the price's own history?</p>
+  <p><strong>Answer.</strong> Yes, by a few percentage points. Places that the field ranks above most of the places visited just before them are more often places from which a large move can be joined.</p>
   <ul class="findings">
-    <li><strong>Why it could happen.</strong> A sharp turn leaves orders behind: the unfinished part of the order that turned price, stops placed just beyond it, and new entries that use it as a reference. They act again when price returns, until price trades through them or they age out after a few weeks. Where little has traded, nothing absorbs a move once it has started.</li>
-    <li><strong>The field.</strong> For any price and time, how many times more likely than at an ordinary place a large move is to start there, if price comes. It is built from those two ingredients: big turns from one to four weeks earlier that price has not broken, and thin traded volume. It was fitted on 2022–2023 and frozen before the held-out data were read.</li>
+    <li><strong>Why it could happen.</strong> A sharp turn leaves orders behind: the unfinished part of the order that turned price, stops placed just beyond it, and new entries that use it as a reference. They act again when price returns, whether it comes back to start a new move or as a pullback inside one, until price trades through them or they age out after a few weeks. Where little has traded, nothing absorbs a move once it has started.</li>
+    <li><strong>The field.</strong> For any price and time, how many times more likely than at an ordinary place a large move is to start or resume there, if price comes. It is built from those two ingredients: big turns from one to four weeks earlier that price has not broken, and thin traded volume. It was fitted on 2022–2023 and frozen before the held-out data were read.</li>
     <li><strong>The yardstick.</strong> Every number is set beside the same pipeline run on fake markets, 19 in development and 20 held out: the real path cut into 13-minute blocks whose directions are flipped at random. The fakes keep volatility and its clustering but erase any memory of price, so what the market does and what the measurement does by itself can be told apart.</li>
-    <li><strong>The result.</strong> In the held-out year, within each trading day, the field's top tenth of places went on to move eight times the session's typical swing 19.8% of the time, against 11.1% for the rest of the day. That gap of 8.7 points is larger than in any fake market; ranking within weeks, or taking the top fifth, agrees. It was a calm year with 2,927 places. In development the same comparison gave gaps of 3.7 to 5.4 points, again above every fake market, and the fit held when each design choice was moved one at a time.</li>
-    <li><strong>What it does not show.</strong> One-minute bars carry no order book, so the results are the footprint the explanation predicts, not a direct view of the orders. The outcome credits pullbacks that hold inside a move with the whole move, so the field finds where moves can be caught, not where they begin. The moves take days, not hours: the median time to eight times the swing is about 47 hours.</li>
+    <li><strong>The result.</strong> In the held-out year, each place was ranked against the places of the previous trading day. Those in the top tenth went on to move eight times the session's typical swing 17.7% of the time, against 11.3% for the rest: a gap of 6.4 points, larger than in any of 20 fake markets. Taking the top fifth agrees; ranking against the previous week gives smaller gaps that beat 19 of the 20. It was a calm year with 2,927 places. In development the same rules gave gaps of 3.4 to 5.0 points, above every fake market, and the fit held when each design choice was moved one at a time.</li>
+    <li><strong>Where the edge comes from.</strong> In development, about half of the edge beyond the fakes comes from pullbacks that hold inside a move, and about a third from the first such place of each session. At the exact origins of large moves the field does no better than on the fakes: origins sit at new highs and lows, where any field that favours thin ground ranks them high.</li>
+    <li><strong>Tied to the price itself.</strong> When the field reads the history of a price 4σ or 8σ away, and the fake markets are read the same way, the edge disappears, at pullbacks and first key places alike.</li>
+    <li><strong>What it does not show.</strong> One-minute bars carry no order book, so the results are the footprint the explanation predicts, not a direct view of the orders. The field does not say which way price will leave a place. The moves take days, not hours: the median time to eight times the swing is about 47 hours.</li>
   </ul>
-  <p><strong>Why read it.</strong> Section 6 sets each prediction of the explanation beside what the data showed, including the explanations that failed. Section 7 lists nine ways the measurement fooled itself, and how each was caught.</p>
+  <p><strong>Why read it.</strong> Section 6 sets each prediction of the explanation beside what the data showed, including the explanations that failed, and shows where the edge comes from. Section 7 lists nine ways the measurement fooled itself, and how each was caught.</p>
 </section>
 
 <section aria-labelledby="s1">
@@ -286,28 +289,29 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   <p>Watch an intraday chart of ES long enough and some prices seem to matter more than others.</p>
   <ul>
     <li>Price stops, or turns sharply, at the price of an earlier sharp turn that it has not traded through since, often a high or a low from the previous week or two.</li>
+    <li>Inside a trend, a pullback often stops at such a price, and the move resumes from there.</li>
     <li>Once price has traded through such a price, it stops mattering.</li>
     <li>Price crosses quickly through stretches where little has traded, and grinds inside ranges where a lot has traded.</li>
   </ul>
-  <p>Traders know these as support and resistance, and as the thin and thick parts of a volume profile. Mostly they are anecdotes. This note asks whether they hold up when measured: do large one-way moves start more often from such prices than from other prices at the same time, and can those prices be read in advance from the price's own history?</p>
-  <p>The study measures this as a relative rate. A place is compared with the other places price visits in the same day or week, and every difference is set beside what fake markets without memory produce. How such places might be traded is outside the scope of this note.</p>
+  <p>Traders know these as support and resistance, and as the thin and thick parts of a volume profile. Mostly they are anecdotes. This note asks whether they hold up when measured: do large one-way moves start, or resume after a pullback, more often at such prices than at other prices at the same time, and can those prices be read in advance from the price's own history?</p>
+  <p>The study measures this as a relative rate. A place is compared with the places price visited just before it, over the previous day or week, and every difference is set beside what fake markets without memory produce. How such places might be traded is outside the scope of this note.</p>
 </section>
 
 <section aria-labelledby="s2">
   <h2 id="s2"><span class="num">2</span>Why it might happen</h2>
   <p>Price moves because traders react to information. A chart cannot show the information, but it shows the footprint of the reaction. So each pattern above should be stated as a sentence about traders: who did what, what they left behind, and how they react when price comes back.</p>
   <ul>
-    <li><strong>Orders left at a turn.</strong> A sharp turn means someone absorbed the flow there: a large buyer at a low, a large seller at a high. If that order was not finished when price left, the rest still waits near the price and absorbs again when price returns.</li>
+    <li><strong>Orders left at a turn.</strong> A sharp turn means someone absorbed the flow there: a large buyer at a low, a large seller at a high. If that order was not finished when price left, the rest still waits near the price and absorbs again when price returns, whether price comes back to start a new move or as a pullback inside one.</li>
     <li><strong>Stops and entries anchored to the turn.</strong> Traders who entered on the turn, or who use it as a reference, place their stops just beyond it and their new entries near it. Orders therefore gather around the turn rather than exactly on it.</li>
     <li><strong>Orders have a lifetime.</strong> A turn formed today is not yet a reference for many traders. Last week's highs and lows are the references most traders use. After a month or so, positions have been closed and orders cancelled.</li>
     <li><strong>Crossing uses them up.</strong> Once price trades through the turn by a clear margin, the waiting orders are filled and the stops triggered, and nothing is left there.</li>
     <li><strong>Thin ground lets a move run.</strong> Where little has traded, no dealer holds inventory to lean against a move and no earlier trades anchor the price, so once a disagreement there is settled, price can travel far. Inside heavily traded areas, dealers trade both ways and price grinds.</li>
     <li><strong>Orders change how far, not whether.</strong> On any path, price turns a little all the time. Orders left at a price matter for whether a turn there becomes a large move.</li>
-    <li><strong>Relative to the same period.</strong> How large a move must be to matter depends on who is active, and that changes from day to day. A place is therefore judged against other places of the same day or week.</li>
+    <li><strong>Relative to the recent past.</strong> How large a move must be to matter depends on who is active, and that changes from day to day. A place is therefore judged against the places price visited just before it.</li>
   </ul>
   <p>This explanation makes predictions that can be checked:</p>
   <ol>
-    <li>Places near recent turns that price has not broken start large moves more often than other places at the same time. Turns from all of history do not, because almost every price has turned at some point.</li>
+    <li>Large moves start, or resume after a pullback, more often near recent turns that price has not broken than at other places at the same time. Turns from all of history do not help, because almost every price has turned at some point.</li>
     <li>The effect is strongest for turns about one to two weeks old and fades within about a month.</li>
     <li>It reaches a short distance around the turn's price, further on the side price is heading to.</li>
     <li>A turn that price has traded through carries nothing.</li>
@@ -346,7 +350,7 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     </div>
     <div>
       <dt>Key place</dt>
-      <dd>A place whose outcome reaches four times the session level (24% of places) or eight times (13%). Twice was too lenient: it marks 44% of places on the real path and on the fakes alike.</dd>
+      <dd>A place whose outcome reaches four times the session level (24% of places) or eight times (13%). Its turn may start a new move or end a pullback inside one; either way, a trade entered at the turn with a stop just beyond it could have caught a large move. Twice was too lenient: it marks 44% of places on the real path and on the fakes alike.</dd>
     </div>
   </dl>
   <p>The outcome has no direction. A reversal counts through its turn. A pause followed by a break-through also counts, through the pullback turn it leaves in the zone. Price that runs straight through leaves no turn, so no move started there. Which way price leaves is a separate question.</p>
@@ -362,8 +366,8 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   <p>Volatility, its clustering, the intraday pattern of activity and the path inside each block stay as they were. Prices end up at other levels, so what happened at a price before says nothing about what happens there now. The fakes go through the same feature search and fitting as the real path, so the zero point also absorbs the optimism of the search. There are 19 fake paths on the development sample and 20 on the held-out sample. Blocks of 7 and 26 minutes were also checked.</p>
   <h3>Only what was known at the time</h3>
   <p>Every reading uses only what was known on the bar the visit began: confirmed turns, printed bars, and the session level known then. This was also checked mechanically. For six places drawn at random, the data were cut after the visit's first bar and everything was rebuilt from scratch. Every input the field uses came out identical to the full-data run, as did all 560,000 rows of big turns around those places. In addition, on paths flipped bar by bar, which have no memory at all, every group of places must average within 1 ± 3% of its expectation; the outcome passes with deviations of 0.9–1.8%.</p>
-  <h3>Comparing within the same period</h3>
-  <p>The field is relative by definition: a place is more or less likely than other places at the same time. Places are therefore compared with places of the same day or week, which cancels the day's overall activity and the size of the players active that day.</p>
+  <h3>Comparing with the recent past</h3>
+  <p>The field is relative by definition: a place is more or less likely than other places at about the same time. Each place is therefore ranked against the places price visited just before it, over the previous day or week. This cancels the overall activity of the period and the size of the players active in it, and uses nothing that came later.</p>
 </section>
 
 <section aria-labelledby="s4">
@@ -396,13 +400,13 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 <section aria-labelledby="s5">
   <h2 id="s5"><span class="num">5</span>Held-out test</h2>
   <p>The field's parameters were written to a single file, and its SHA-256 fingerprint was recorded before the held-out data were read. Nothing was refitted, the held-out sample was never used to fit or choose anything about the field, and each fake market was scored with the same frozen field.</p>
-  <p>The comparison follows the field's definition, written before the held-out data were read: a place is compared with places of the same period. Within each trading day (or week), places are ranked by field value, and the top 10% (or 20%) are compared with the rest of that day (or week) on the chance of moving out eight times the session level. Places tied at the cut count in proportion.</p>
+  <p>Each place is ranked only against the places that came before it: those of the previous trading day, or of the previous five, and the earlier places of its own day. If its field value is in the top 10% (or 20%) of that window, it joins the top group; places tied at the cut count in proportion. The top group is then compared with the rest on the chance of moving out eight times the session level. The ranking only looks back, so it can be applied as price arrives.</p>
   <figure>
-    <figcaption><span class="label">Figure 1</span>Held-out year. Gap in the eight-times rate between the field's top group and the rest of its day or week.</figcaption>
+    <figcaption><span class="label">Figure 1</span>Held-out year. Gap in the eight-times rate between the top group and the rest, each place ranked against the places before it.</figcaption>
     <div class="figure-scroll">
       <svg viewBox="0 0 680 300" role="img" aria-labelledby="f1-title f1-desc">
         <title id="f1-title">Held-out gaps against 20 fake markets</title>
-        <desc id="f1-desc">For all four groupings the real gap lies to the right of the largest fake gap: daily top 10% 8.7 against 7.1, daily top 20% 6.0 against 4.2, weekly top 10% 7.2 against 7.0, weekly top 20% 5.7 against 4.2.</desc>
+        <desc id="f1-desc">Ranked against the past day, the real gap lies to the right of the largest fake gap: top 10% 6.4 against 4.0, top 20% 5.5 against 3.4. Ranked against the past week, one fake reaches each real gap: top 10% 4.8 against 5.0, top 20% 4.2 against 5.6.</desc>
         <g>
           <circle class="real-dot" cx="160" cy="18" r="5"/>
           <text class="lab" x="171" y="22">Real market</text>
@@ -427,78 +431,93 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           <text class="ax" x="490" y="256" text-anchor="middle">+6</text>
           <text class="ax" x="570" y="256" text-anchor="middle">+8</text>
           <text class="ax" x="650" y="256" text-anchor="middle">+10</text>
-          <text class="ax" x="410" y="284" text-anchor="middle">Top group minus rest of its day or week, percentage points</text>
+          <text class="ax" x="410" y="284" text-anchor="middle">Top group minus the rest, percentage points</text>
         </g>
         <g>
-          <text class="lab" x="158" y="74" text-anchor="end">Daily, top 10%</text>
-          <line class="null-line" x1="334" y1="70" x2="534" y2="70"/>
-          <line class="null-line" x1="534" y1="62" x2="534" y2="78"/>
-          <circle class="null-dot" cx="334" cy="70" r="5"><title>Fake markets: median +2.1</title></circle>
-          <circle class="real-dot" cx="598" cy="70" r="6.5"><title>Real: 19.8% against 11.1%, gap +8.7</title></circle>
-          <text class="val" x="611" y="74">+8.7</text>
+          <text class="lab" x="158" y="74" text-anchor="end">Past day, top 10%</text>
+          <line class="null-line" x1="286" y1="70" x2="410" y2="70"/>
+          <line class="null-line" x1="410" y1="62" x2="410" y2="78"/>
+          <circle class="null-dot" cx="286" cy="70" r="5"><title>Fake markets: median +0.9</title></circle>
+          <circle class="real-dot" cx="506" cy="70" r="6.5"><title>Real: 17.7% against 11.3%, gap +6.4</title></circle>
+          <text class="val" x="506" y="57" text-anchor="middle">+6.4</text>
 
-          <text class="lab" x="158" y="122" text-anchor="end">Daily, top 20%</text>
-          <line class="null-line" x1="306" y1="118" x2="418" y2="118"/>
-          <line class="null-line" x1="418" y1="110" x2="418" y2="126"/>
-          <circle class="null-dot" cx="306" cy="118" r="5"><title>Fake markets: median +1.4</title></circle>
-          <circle class="real-dot" cx="490" cy="118" r="6.5"><title>Real: 16.7% against 10.8%, gap +6.0</title></circle>
-          <text class="val" x="503" y="122">+6.0</text>
+          <text class="lab" x="158" y="122" text-anchor="end">Past day, top 20%</text>
+          <line class="null-line" x1="282" y1="118" x2="386" y2="118"/>
+          <line class="null-line" x1="386" y1="110" x2="386" y2="126"/>
+          <circle class="null-dot" cx="282" cy="118" r="5"><title>Fake markets: median +0.8</title></circle>
+          <circle class="real-dot" cx="470" cy="118" r="6.5"><title>Real: 16.4% against 10.8%, gap +5.5</title></circle>
+          <text class="val" x="470" y="105" text-anchor="middle">+5.5</text>
 
-          <text class="lab" x="158" y="170" text-anchor="end">Weekly, top 10%</text>
-          <line class="null-line" x1="234" y1="166" x2="530" y2="166"/>
-          <line class="null-line" x1="530" y1="158" x2="530" y2="174"/>
-          <circle class="null-dot" cx="234" cy="166" r="5"><title>Fake markets: median −0.4</title></circle>
-          <circle class="real-dot" cx="538" cy="166" r="6.5"><title>Real: 18.4% against 11.2%, gap +7.2</title></circle>
-          <text class="val" x="552" y="170">+7.2</text>
+          <text class="lab" x="158" y="170" text-anchor="end">Past week, top 10%</text>
+          <line class="null-line" x1="218" y1="166" x2="450" y2="166"/>
+          <line class="null-line" x1="450" y1="158" x2="450" y2="174"/>
+          <circle class="null-dot" cx="218" cy="166" r="5"><title>Fake markets: median −0.8</title></circle>
+          <circle class="real-dot" cx="442" cy="166" r="6.5"><title>Real: 16.3% against 11.4%, gap +4.8</title></circle>
+          <text class="val" x="442" y="153" text-anchor="middle">+4.8</text>
 
-          <text class="lab" x="158" y="218" text-anchor="end">Weekly, top 20%</text>
-          <line class="null-line" x1="238" y1="214" x2="418" y2="214"/>
-          <line class="null-line" x1="418" y1="206" x2="418" y2="222"/>
-          <circle class="null-dot" cx="238" cy="214" r="5"><title>Fake markets: median −0.3</title></circle>
-          <circle class="real-dot" cx="478" cy="214" r="6.5"><title>Real: 16.5% against 10.8%, gap +5.7</title></circle>
-          <text class="val" x="491" y="218">+5.7</text>
+          <text class="lab" x="158" y="218" text-anchor="end">Past week, top 20%</text>
+          <line class="null-line" x1="242" y1="214" x2="474" y2="214"/>
+          <line class="null-line" x1="474" y1="206" x2="474" y2="222"/>
+          <circle class="null-dot" cx="242" cy="214" r="5"><title>Fake markets: median −0.2</title></circle>
+          <circle class="real-dot" cx="418" cy="214" r="6.5"><title>Real: 15.4% against 11.2%, gap +4.2</title></circle>
+          <text class="val" x="418" y="201" text-anchor="middle">+4.2</text>
         </g>
       </svg>
     </div>
   </figure>
   <figure>
-    <figcaption><span class="label">Table 2</span>Held-out year, eight-times rate of the field's top group and of the rest of its period.</figcaption>
+    <figcaption><span class="label">Table 2</span>Held-out year, each place ranked against the places before it. Eight-times rate of the top group and of the rest.</figcaption>
+    <div class="table-wrap">
+      <table class="results">
+        <thead><tr><th>Ranked against</th><th>Top group</th><th>Rest</th><th>Gap, points</th><th>Fakes: median / max</th><th>Fakes at or above</th></tr></thead>
+        <tbody>
+          <tr><td>Past day, top 10%</td><td>17.7%</td><td>11.3%</td><td><strong>+6.4</strong></td><td class="null">+0.9 / +4.0</td><td>0 of 20</td></tr>
+          <tr><td>Past day, top 20%</td><td>16.4%</td><td>10.8%</td><td><strong>+5.5</strong></td><td class="null">+0.8 / +3.4</td><td>0 of 20</td></tr>
+          <tr><td>Past week, top 10%</td><td>16.3%</td><td>11.4%</td><td>+4.8</td><td class="null">−0.8 / +5.0</td><td>1 of 20</td></tr>
+          <tr><td>Past week, top 20%</td><td>15.4%</td><td>11.2%</td><td>+4.2</td><td class="null">−0.2 / +5.6</td><td>1 of 20</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </figure>
+  <p>Ranked against the previous day, the top tenth went on to move eight times the session level 17.7% of the time, against 11.3% for the rest: a gap of 6.4 points, larger than in any of the 20 fake markets. The top fifth also beats every fake. Ranked against the previous week, the gaps are smaller, 4.8 and 4.2 points, and one of the 20 fakes reaches each of them. On the development sample the same four rules give +3.4, +3.5, +5.0 and +4.6 points, all above every fake market, whose medians sit near zero.</p>
+  <p>The held-out year was calm: 21 visits a day against 47 in development, giving 2,927 places and 350 places that moved out eight times.</p>
+  <p><strong>How much evidence.</strong> The 350 key places are not 350 independent events. Of the 274 trading days with a full window, 69 contribute a positive excess to the past-day top tenth, and the five strongest carry a little over a quarter of it. A day-block bootstrap of that gap (1,000 draws) puts the middle 90% at +3.1 to +9.9 points, so the gap is not noise around zero. Against that, 20 fake markets resolve chance only to about one in 21 per rule, and the four rules are correlated.</p>
+  <p><strong>Ranking within the whole period.</strong> As a check on how well the field orders places, each place was also ranked against all places of its day or week. This uses the field values of places that came later in the period, though none of their outcomes, so it is an evaluation rather than a rule one could trade. Within each day, the top tenth went on to move eight times 19.8% of the time, against 11.1% for the rest. All four daily and weekly groupings beat all 20 fakes (Table 3). At the finest grain, trading day × session, where a group holds about six places, the top fifth still beats every fake market and the top tenth all but one.</p>
+  <figure>
+    <figcaption><span class="label">Table 3</span>Held-out year, each place ranked against all places of its day or week; an evaluation of the field's ordering, not a tradable rule. Eight-times rate of the top group and of the rest of its period.</figcaption>
     <div class="table-wrap">
       <table class="results">
         <thead><tr><th>Grouping</th><th>Top group</th><th>Rest</th><th>Gap, points</th><th>Fakes: median / max</th><th>Fakes at or above</th></tr></thead>
         <tbody>
-          <tr><td>Daily, top 10%</td><td>19.8%</td><td>11.1%</td><td><strong>+8.7</strong></td><td class="null">+2.1 / +7.1</td><td>0 of 20</td></tr>
-          <tr><td>Daily, top 20%</td><td>16.7%</td><td>10.8%</td><td><strong>+6.0</strong></td><td class="null">+1.4 / +4.2</td><td>0 of 20</td></tr>
-          <tr><td>Weekly, top 10%</td><td>18.4%</td><td>11.2%</td><td><strong>+7.2</strong></td><td class="null">−0.4 / +7.0</td><td>0 of 20</td></tr>
-          <tr><td>Weekly, top 20%</td><td>16.5%</td><td>10.8%</td><td><strong>+5.7</strong></td><td class="null">−0.3 / +4.2</td><td>0 of 20</td></tr>
+          <tr><td>Daily, top 10%</td><td>19.8%</td><td>11.1%</td><td>+8.7</td><td class="null">+2.1 / +7.1</td><td>0 of 20</td></tr>
+          <tr><td>Daily, top 20%</td><td>16.7%</td><td>10.8%</td><td>+6.0</td><td class="null">+1.4 / +4.2</td><td>0 of 20</td></tr>
+          <tr><td>Weekly, top 10%</td><td>18.4%</td><td>11.2%</td><td>+7.2</td><td class="null">−0.4 / +7.0</td><td>0 of 20</td></tr>
+          <tr><td>Weekly, top 20%</td><td>16.5%</td><td>10.8%</td><td>+5.7</td><td class="null">−0.3 / +4.2</td><td>0 of 20</td></tr>
           <tr><td>Day × session, top 10%</td><td>—</td><td>—</td><td>+5.0</td><td class="null">+2.4 / +5.5</td><td>1 of 20</td></tr>
           <tr><td>Day × session, top 20%</td><td>—</td><td>—</td><td>+4.4</td><td class="null">+1.4 / +4.2</td><td>0 of 20</td></tr>
         </tbody>
       </table>
     </div>
   </figure>
-  <p>All four daily and weekly groupings beat all 20 fake markets. Within a day, the places the field ranked highest went on to make an eight-times move nearly twice as often as the rest of that day. At the finest grain, trading day × session, where a group holds about six places, the top fifth still beats every fake market and the top tenth all but one. On the development sample the daily and weekly comparisons give +5.4, +3.7, +5.1 and +4.1 points, against fake medians of +1.7, +0.3, +0.4 and −0.3, so the held-out gaps are no smaller than those in development.</p>
-  <p>The held-out year was calm: 21 visits a day against 47 in development, giving 2,927 places and 350 places that moved out eight times.</p>
-  <p><strong>How much evidence.</strong> The 350 key places are not 350 independent events. Of the 275 trading days, about 70 contribute a positive excess to the daily top tenth, and the five strongest carry about a quarter of it. A day-block bootstrap of the daily top-10% gap (1,000 draws) puts the middle 90% at +5.5 to +12.4 points, so the gap is not noise around zero. Against that, 20 fake markets resolve chance only to about one in 21 per grouping, and the groupings are correlated: the same few fake markets lead every column.</p>
-  <p><strong>Pooling.</strong> Scored across all thirteen months at once, the top tenth still beats the rest by 3.4 points (15.0% against 11.6%), but one of the 20 fake markets does better (4.4). Pooling compares calm periods with active ones and does not match the field's definition; the drop in the gap shows how much of the within-period edge is relative to its period.</p>
+  <p><strong>Pooling.</strong> Scored across all thirteen months at once, the top tenth still beats the rest by 3.4 points (15.0% against 11.6%), but one of the 20 fake markets does better (4.4). Pooling compares calm periods with active ones and does not match the field's definition; the drop in the gap shows how much of the edge is relative to its period.</p>
 </section>
 
 <section aria-labelledby="s6">
   <h2 id="s6"><span class="num">6</span>What was verified, and what was not</h2>
   <h3>Predictions against results</h3>
   <figure>
-    <figcaption><span class="label">Table 3</span>The predictions of section 2 beside the data. Development results describe the pattern; the held-out year tests the field that combines predictions 1 to 5.</figcaption>
+    <figcaption><span class="label">Table 4</span>The predictions of section 2 beside the data. Development results describe the pattern; the held-out year tests the field that combines predictions 1 to 5.</figcaption>
     <div class="table-wrap">
       <table class="predictions">
         <thead><tr><th>Prediction</th><th>What the data showed</th><th>Status</th></tr></thead>
         <tbody>
-          <tr><td>1. Recent turns that price has not broken start more large moves; turns from all of history do not</td><td>A standing big turn from the last four weeks raised the eight-times rate by 2.6–3.0 points, above all 19 fakes. Counting every earlier turn showed no difference.</td><td>Supported in development, and held out through the field</td></tr>
+          <tr><td>1. Near recent turns that price has not broken, large moves start or resume more often; turns from all of history do not help</td><td>A standing big turn from the last four weeks raised the eight-times rate by 2.6–3.0 points, above all 19 fakes. Counting every earlier turn showed no difference.</td><td>Supported in development, and held out through the field</td></tr>
           <tr><td>2. Strongest for turns one to two weeks old, fading within about a month</td><td>Strongest for turns one to two weeks old; little from turns one to three months old.</td><td>Supported in development</td></tr>
           <tr><td>3. Reaches a short distance around the turn, further on the side price is heading to</td><td>Strongest in the turn's own zone, reaching further ahead than behind.</td><td>Supported in development</td></tr>
           <tr><td>4. A turn that price has traded through carries nothing</td><td>Broken turns added nothing. Turns broken within the last day went with fewer large moves, below every fake.</td><td>Supported in development</td></tr>
           <tr><td>5. Thin ground adds; heavily traded ground damps</td><td>Thin zones raised the rate by 2.0 points, above all fakes. Fewer moves started inside heavily traded areas, but within the fakes' range.</td><td>Thin: supported. Damping: same direction, not beyond the fakes</td></tr>
           <tr><td>6. The difference shows for large moves only</td><td>No difference at twice the session level; the ratio grows toward eight and sixteen times.</td><td>Supported in development</td></tr>
-          <tr><td>7. Nothing without price memory, and tied to the price itself</td><td>The fakes show small gaps throughout. Read from a price 8σ away, a third of the edge remains.</td><td>Supported; the tie to the price is a first reading</td></tr>
+          <tr><td>7. Nothing without price memory, and tied to the price itself</td><td>The fakes show small gaps throughout. Read from a price 4σ or 8σ away, with the fakes read the same way, the edge disappears.</td><td>Supported in development</td></tr>
         </tbody>
       </table>
     </div>
@@ -507,46 +526,72 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   <h3>Explanations that did not hold</h3>
   <p>Not every explanation survived. Trapped positions, held by traders who bought at a heavily traded band and want out when price returns, showed no effect of their own once the other terms were held. The way price arrived made no difference, whether measured by its speed, its volume, or its direction relative to the larger move. Traces of swept stops and of urgent buyers or sellers pointed the expected way but stayed inside the fakes' range. Richer versions of the field, which add the old traded area, the edge of the recent range, the larger leg and trapped positions, gained nothing once the fakes' own fitting gains were subtracted (Table 1).</p>
 
-  <h3>Origins and followers</h3>
-  <p>Move-out looks only forward, so a pullback that holds inside a long move is credited with the rest of the move, even though its own level is small. Call such places <em>followers</em>, and turns that are large in their own right <em>origins</em>.</p>
+  <h3>Where the edge comes from</h3>
+  <p>A key place can be where a large move begins or where a pullback inside it holds. In both cases a trade entered at the turn, with its stop just beyond, could have caught a large move. The key places therefore split into three kinds:</p>
+  <ul>
+    <li><strong>Origins.</strong> Turns that are large in their own right: both the swing into the turn and the swing out of it reach eight times the session level.</li>
+    <li><strong>The first key place of a session.</strong> The first place in a trading day and session from which a large move followed, when its turn is not an origin. Often the move began in an earlier session and this is its first pullback that holds.</li>
+    <li><strong>Later key places.</strong> The others in the same session, mostly pullbacks that hold inside a move already under way.</li>
+  </ul>
   <figure>
-    <figcaption><span class="label">Figure 2</span>Schematic, not data. By move-out, each follower is credited with the rest of the fall. By its own level, a follower is only as large as its pullback, and only the origin is a large turn.</figcaption>
+    <figcaption><span class="label">Figure 2</span>Schematic, not data. The origin is a large turn in its own right. Each pullback that holds is a smaller turn from which the rest of the move could still be caught.</figcaption>
     <div class="figure-scroll">
       <svg viewBox="0 0 680 250" role="img" aria-labelledby="f2-title f2-desc">
-        <title id="f2-title">Origin and followers in a falling move</title>
-        <desc id="f2-desc">A price path rises to a high, the origin, then falls in steps. Each small bounce high on the way down is a follower; the arrow shows that a follower's move-out spans the rest of the fall.</desc>
+        <title id="f2-title">Origin and pullbacks in a falling move</title>
+        <desc id="f2-desc">A price path rises to a high, the origin, then falls in steps. Each small bounce high on the way down is a pullback that holds; the arrow shows that the rest of the fall could still be caught from one of them.</desc>
         <polyline class="price" points="30,170 120,40 190,105 222,82 300,140 330,118 410,175 440,152 520,212 548,196 640,236"/>
         <line class="guide" x1="330" y1="118" x2="664" y2="118"/>
         <line class="guide" x1="640" y1="236" x2="664" y2="236"/>
         <line class="arrow" x1="660" y1="124" x2="660" y2="230"/>
         <path class="arrow-head" d="M660,118 L655,128 L665,128 Z"/>
         <path class="arrow-head" d="M660,236 L655,226 L665,226 Z"/>
-        <text class="note" x="650" y="140" text-anchor="end">Move-out credited to this follower</text>
+        <text class="note" x="650" y="140" text-anchor="end">Still to be caught from this pullback</text>
         <circle class="real-dot" cx="120" cy="40" r="6.5"/>
         <text class="lab" x="134" y="36">Origin: a large turn in its own right</text>
         <circle class="follower" cx="222" cy="82" r="5"/>
         <circle class="follower" cx="330" cy="118" r="5"/>
         <circle class="follower" cx="440" cy="152" r="5"/>
         <circle class="follower" cx="548" cy="196" r="5"/>
-        <text class="lab" x="236" y="70">Followers: pullbacks that hold</text>
+        <text class="lab" x="236" y="70">Pullbacks that hold</text>
       </svg>
     </div>
   </figure>
+  <figure>
+    <figcaption><span class="label">Table 5</span>Development sample, eight times the session level. The gap between each day's top tenth by field and the rest of that day, ranked within the whole day as in Table 3, split by kind of key place. The fake markets are scored with the same frozen field.</figcaption>
+    <div class="table-wrap">
+      <table class="results">
+        <thead><tr><th>Kind</th><th>Key places</th><th>In the top tenth</th><th>In the rest</th><th>Gap, points</th><th>Fakes: median (max)</th><th>Beyond the fakes' median</th></tr></thead>
+        <tbody>
+          <tr><td>Origins</td><td>98</td><td>3.1%</td><td>0.6%</td><td>+2.5</td><td class="null">+2.2 (+3.0)</td><td>+0.3</td></tr>
+          <tr><td>First key place of a session</td><td>480</td><td>6.8%</td><td>3.7%</td><td>+3.1</td><td class="null">+1.9 (+3.0)</td><td><strong>+1.3</strong></td></tr>
+          <tr><td>Later key places</td><td>1,005</td><td>8.1%</td><td>8.4%</td><td>−0.3</td><td class="null">−2.2 (−1.0)</td><td><strong>+1.9</strong></td></tr>
+          <tr><td>All key places</td><td>1,583</td><td>18.0%</td><td>12.6%</td><td>+5.4</td><td class="null">+1.7 (+4.5)</td><td><strong>+3.7</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </figure>
   <ul>
-    <li><strong>Most key places are followers.</strong> By move-out, 13.1% of development places are key at eight times. By the turn's own level, only 0.8% are: 94 places in two years.</li>
-    <li><strong>The field ranks the first key place of a session a little higher.</strong> Ranked within its own day and session from 0 to 1, the first key place sits at 0.58 on average, at the top of the fakes' range (median 0.55, maximum 0.58). The 1,058 later key places sit at 0.49, close to places that are not key.</li>
-    <li><strong>For origins, the frozen field shows nothing beyond mechanics.</strong> Origins rank at 0.78 within their session, but the same frozen field gives the fakes' origins 0.80. Origins sit at the session's highest or lowest zone almost by construction (99%, against about 20% of other places), and price has hardly traded there, so they read as thin (90%, against about 30%). Ranked only among a session's new highs and lows, origins sit at 0.71, against 0.73 on the fakes.</li>
+    <li><strong>Origins: nothing beyond the fakes.</strong> The field puts origins in its top tenth five times as often as in the rest, but it does the same on the fake markets. Origins sit at the session's highest or lowest zone almost by construction (99%, against about 20% of other places), and price has hardly traded there, so they read as thin (90%, against about 30%). Ranked only among a session's new highs and lows, origins sit at 0.71, against 0.73 on the fakes.</li>
+    <li><strong>Pullbacks: the largest part of the edge.</strong> On the fake markets, the field's top tenth holds clearly fewer pullbacks than the rest of the day (−2.2 points): without memory, pullbacks rarely sit where the field is high. On the real path they sit there as often as anywhere else, 1.9 points beyond the fakes and above all 19.</li>
+    <li><strong>The first key place of a session:</strong> 1.3 points beyond the fakes, above all 19.</li>
   </ul>
-  <p>So the field picks places from which a large move can be captured, the origins and the pullbacks that hold together. Picking out the origins themselves is the job of the next stage.</p>
+  <p>Ranking within each day and session instead gives the same picture: origins −0.2 beyond the fakes, first key places +1.0, later key places +1.3. So the field's contribution beyond chance is about where a large move can be joined, mostly at the session's first such place and at pullbacks that hold, not about the exact turning point where the move begins.</p>
 
   <h3>Memory of place, or a general state?</h3>
-  <p>A field that only says "price is somewhere new, in a trend" would also beat the fake markets, which have no trends longer than 13 minutes. To separate the two, the field was read for each place from the history of a price 2, 4 or 8σ away, keeping the place's time, direction of approach and session level. The within-period comparison was then repeated on the development sample.</p>
+  <p>A field that only says "price is somewhere new, in a trend" would also beat the fake markets, which have no trends longer than 13 minutes. To separate the two, the field was read for each place from the history of a price 2, 4 or 8σ away, keeping the place's time, direction of approach and session level, and the whole-period comparison of Table 3 was repeated on the development sample. The fake markets were read with the same shifts, because a shifted reading also changes what the field picks up mechanically from where the place sits.</p>
   <figure>
-    <figcaption><span class="label">Figure 3</span>Development sample. Gap between the top group and the rest of its period, averaged over the four groupings, when the field reads the history of a shifted price.</figcaption>
+    <figcaption><span class="label">Figure 3</span>Development sample. Gap between the top group and the rest of its period, averaged over the four whole-period groupings (daily and weekly, top tenth and top fifth), when the field reads the history of a shifted price. The fake markets are read with the same shift.</figcaption>
     <div class="figure-scroll">
       <svg viewBox="0 0 680 300" role="img" aria-labelledby="f3-title f3-desc">
         <title id="f3-title">Edge against the shift of the price whose history is read</title>
-        <desc id="f3-desc">The average gap is 4.6 points at the place's own price, 3.7 at 2 sigma, 2.6 at 4 sigma and 1.9 at 8 sigma; the fake markets' median is 0.5.</desc>
+        <desc id="f3-desc">With the fake markets read the same way, the real gap falls from 4.6 points at the place's own price to 2.6 at 4 sigma and 1.9 at 8 sigma, while the fakes' median rises from 0.5 to 2.2 and 2.4.</desc>
+        <g>
+          <circle class="real-dot" cx="300" cy="20" r="5"/>
+          <text class="lab" x="311" y="24">Real market</text>
+          <line class="null-dash" x1="410" y1="20" x2="430" y2="20"/>
+          <circle class="null-dot" cx="420" cy="20" r="4.5"/>
+          <text class="lab" x="438" y="24">Fake markets, same shift (median)</text>
+        </g>
         <g>
           <line class="grid" x1="80" y1="40" x2="640" y2="40"/>
           <line class="grid" x1="80" y1="80" x2="640" y2="80"/>
@@ -568,22 +613,40 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           <text class="ax" x="360" y="286" text-anchor="middle">Distance to the price whose history is read</text>
           <text class="ax" x="22" y="140" text-anchor="middle" transform="rotate(-90 22 140)">Gap, points</text>
         </g>
-        <line class="null-dash" x1="80" y1="220" x2="640" y2="220"/>
-        <text class="note" x="636" y="212" text-anchor="end">Fake markets, median: +0.5</text>
-        <polyline class="real-line" points="80,56 220,92 360,136 640,164"/>
-        <circle class="real-dot" cx="80" cy="56" r="6.5"><title>Own price: +4.6</title></circle>
-        <circle class="real-dot" cx="220" cy="92" r="6.5"><title>Shifted 2σ: +3.7</title></circle>
-        <circle class="real-dot" cx="360" cy="136" r="6.5"><title>Shifted 4σ: +2.6</title></circle>
-        <circle class="real-dot" cx="640" cy="164" r="6.5"><title>Shifted 8σ: +1.9</title></circle>
-        <text class="val" x="92" y="48">+4.6</text>
-        <text class="val" x="232" y="84">+3.7</text>
-        <text class="val" x="372" y="128">+2.6</text>
-        <text class="val" x="634" y="188" text-anchor="end">+1.9</text>
-        <text class="lab" x="400" y="118">Real market</text>
+        <polyline class="null-dash" points="80,221 360,151 640,144"/>
+        <circle class="null-dot" cx="80" cy="221" r="5"><title>Fakes, own price: median +0.5</title></circle>
+        <circle class="null-dot" cx="360" cy="151" r="5"><title>Fakes, shifted 4σ: median +2.2</title></circle>
+        <circle class="null-dot" cx="640" cy="144" r="5"><title>Fakes, shifted 8σ: median +2.4</title></circle>
+        <polyline class="real-line" points="80,58 220,91 360,137 640,165"/>
+        <circle class="real-dot" cx="80" cy="58" r="6.5"><title>Own price: +4.6</title></circle>
+        <circle class="real-dot" cx="220" cy="91" r="6.5"><title>Shifted 2σ: +3.7</title></circle>
+        <circle class="real-dot" cx="360" cy="137" r="6.5"><title>Shifted 4σ: +2.6</title></circle>
+        <circle class="real-dot" cx="640" cy="165" r="6.5"><title>Shifted 8σ: +1.9</title></circle>
+        <text class="val" x="92" y="50">+4.6</text>
+        <text class="val" x="232" y="83">+3.7</text>
+        <text class="val" x="372" y="129">+2.6</text>
+        <text class="val" x="630" y="186" text-anchor="end">+1.9</text>
+        <text class="val" x="92" y="236">+0.5</text>
+        <text class="val" x="372" y="172">+2.2</text>
+        <text class="val" x="630" y="132" text-anchor="end">+2.4</text>
       </svg>
     </div>
   </figure>
-  <p>Of the edge's excess over the fakes, about four-fifths remains at 2σ, within the kernel's own width. About half remains at 4σ, and about a third at 8σ, roughly 4.5 times the session level. This suggests that about two-thirds of the edge is tied to the history at and near the price itself. The check ran on one path, in sample, so it is a first reading rather than a measurement. A shifted reading also loses whether the place sits at the edge of the range price has visited, so this shows the edge belongs to the place's history, old range edges included; it does not single out orders resting there. The remaining third reflects a broader state, such as a trend, or a regional effect.</p>
+  <figure>
+    <figcaption><span class="label">Table 6</span>Development sample. Gap beyond the fakes' median, in points, when the field reads the history of a price shifted up and down by the given distance and the 19 fakes are read the same way; averaged over the four whole-period groupings. In brackets: how many fakes reach the real gap.</figcaption>
+    <div class="table-wrap">
+      <table class="results">
+        <thead><tr><th>Kind</th><th>Own price</th><th>4σ away</th><th>8σ away</th></tr></thead>
+        <tbody>
+          <tr><td>Later key places (pullbacks)</td><td>+2.1 <span class="null">(0)</span></td><td>+0.2 <span class="null">(5)</span></td><td>−0.5 <span class="null">(19)</span></td></tr>
+          <tr><td>First key place of a session</td><td>+1.5 <span class="null">(0)</span></td><td>−0.1 <span class="null">(11)</span></td><td>−0.1 <span class="null">(12)</span></td></tr>
+          <tr><td>Origins</td><td>+0.4 <span class="null">(2)</span></td><td>+0.1 <span class="null">(5)</span></td><td>+0.2 <span class="null">(4)</span></td></tr>
+          <tr><td>All key places</td><td><strong>+4.1</strong> <span class="null">(0)</span></td><td>+0.4 <span class="null">(5)</span></td><td>−0.5 <span class="null">(17)</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </figure>
+  <p>Beyond the fakes read the same way, the edge is +4.1 points at the place's own price, +0.4 at 4σ and below zero at 8σ. It disappears at the pullbacks and at the first key places alike. Each of the field's two terms, ranked alone, loses its edge the same way: the thinness that counts is the place's own, and so are the turns, apart from a small part that still shows 4σ away. So the edge belongs to the history of the price itself and its immediate surroundings, not to a general state of the market. Without the same shift on the fakes the comparison would mislead: read 8σ away, the fake markets themselves show a gap of +2.4 points. The check ran on one path and its fakes, in the development sample.</p>
 
   <h3>Time scale</h3>
   <p>The moves take days. From the turn, the median time to reach 2, 4 and 8 times the session level is 1.4, 7.3 and 47 hours, and only 28% of eight-times moves get there within 23 hours. In the first hour the field's top tenth moves less than the rest: it reaches twice the session level 12.6% of the time, against 19.0%. Its advantage appears after days: within five days it reaches four times 4.7 points more often. For intraday trading, the field on its own is background.</p>
@@ -607,9 +670,8 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         <tr><td>A ratio above its bound</td><td>An efficiency above one for 19.4% of places</td><td>It read the turn bar's wick. Corrected, its top tenth only marked visits right after a fresh turn.</td><td>Drop the term</td></tr>
         <tr><td>Rows per touch instead of per visit</td><td>One move produced 10–20 rows</td><td>The evidence was overstated: 617 rows were 30 visits on 6 trading days.</td><td>One visit, one observation</td></tr>
         <tr><td>Differences that every market shows</td><td>The fake markets</td><td>The approaching leg's length differed by −0.133 on the real path and by −0.136 to −0.164 on the fakes.</td><td>Report every number against the fakes</td></tr>
-        <tr><td>A pooled comparison for a relative field</td><td>Scoring all thirteen held-out months together</td><td>Calm and active months are mixed; the gap shrinks to 3.4 points, within one fake market's reach (section 5).</td><td>Compare within the period</td></tr>
-        <tr><td>Move-out credits followers</td><td>At eight times, 13.1% of places are key by move-out and 0.8% by the turn's own level</td><td>Every pullback that holds inside a move inherits the rest of the move, so the field learns where moves can be captured, not where they begin (section 6).</td><td>Next stage: score each turn at its own level</td></tr>
-      </tbody>
+        <tr><td>A zero point read differently from the real path</td><td>Shifted readings of the real path were first compared with unshifted fakes</td><td>A third of the edge seemed to survive a shift of 8σ. Fakes read with the same shift reach that level too, so that third was mechanical.</td><td>Read the fakes exactly as the real path is read</td></tr>
+        <tr><td>A pooled comparison for a relative field</td><td>Scoring all thirteen held-out months together</td><td>Calm and active months are mixed; the gap shrinks to 3.4 points, within one fake market's reach (section 5).</td><td>Rank each place against places of about the same time</td></tr>      </tbody>
     </table>
   </div>
 </section>
@@ -620,9 +682,9 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     <li><strong>One instrument and one held-out year.</strong> The held-out year was calm, with 2,927 places and 350 eight-times key places.</li>
     <li><strong>Few independent moves.</strong> Large moves cluster. In development, the top tenth's 220 key places come from 36 separate moves, and the five strongest sessions carry 42% of its excess. Evidence is better counted in moves than in places.</li>
     <li><strong>Coarse probabilities.</strong> Twenty fake markets resolve probabilities only to about one in 21.</li>
-    <li><strong>Origins and followers mixed.</strong> The outcome credits pullbacks inside a move with the whole move (section 6).</li>
+    <li><strong>Origins not singled out.</strong> At the exact origins of large moves the field does no better than on fake markets; its edge lies at pullbacks that hold and at the first such place of a session. That breakdown was measured on the development sample only (section 6).</li>
     <li><strong>Multi-day horizon.</strong> On its own, the field is background for intraday trading.</li>
-    <li><strong>A key rate is not a win rate.</strong> The note measures where large moves start, not how to enter, where to stop or when to exit.</li>
+    <li><strong>A key rate is not a win rate.</strong> The note measures where large moves start or resume, not how to enter, where to stop or when to exit.</li>
   </ul>
   <p><strong>Next.</strong> Extend the study to several scales, and test it on data not yet used, from April 2025 on, and on other instruments.</p>
 </section>
@@ -636,13 +698,14 @@ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         <tr><td>Explanation</td><td>Every ingredient is tied to a stated trader behaviour with a prediction, and the explanations that failed are reported (sections 2 and 6)</td></tr>
         <tr><td>Look-ahead</td><td>Every reading uses only what was known on the visit's first bar; checked mechanically by cutting the data after that bar and rebuilding six places from scratch (section 3)</td></tr>
         <tr><td>Null model</td><td>Sign-flipped fake markets keep volatility, its clustering, the time-of-day pattern and the path inside each 13-minute block; they destroy price memory and any direction beyond 13 minutes. Blocks of 7 and 26 minutes agree</td></tr>
+        <tr><td>Placebo</td><td>The field read from prices 4σ and 8σ away, with the fakes read the same way; the edge disappears (section 6)</td></tr>
         <tr><td>Mechanical differences</td><td>Every number is reported beside the same pipeline on the fakes; differences the fakes reproduce are discarded (section 7)</td></tr>
         <tr><td>Selection in the search</td><td>82 feature rows per threshold against 19 fakes: about one row in ten lies outside their range by chance. The kernel was chosen from 2,304 candidates, and the fakes searched the same grid, so the zero point absorbs the optimism of the search</td></tr>
         <tr><td>Frozen parameters</td><td>One file, SHA-256 recorded before the held-out data were read; nothing refitted</td></tr>
         <tr><td>Sensitivity</td><td>Each design choice moved one at a time, real and fake paths refitted; block length varied (section 4)</td></tr>
         <tr><td>Calibration</td><td>On paths flipped bar by bar, with no memory at all, the outcome is flat to within 1 ± 3% (section 3)</td></tr>
         <tr><td>Evidence counting</td><td>Visits, not touches; moves and days reported beside places; day-block bootstrap of the held-out gap (sections 5 and 8)</td></tr>
-        <tr><td>Resolution of the test</td><td>20 fakes resolve chance to about one in 21 per grouping; the groupings are correlated (section 5)</td></tr>
+        <tr><td>Resolution of the test</td><td>20 fakes resolve chance to about one in 21 per rule; the rules are correlated (section 5)</td></tr>
       </tbody>
     </table>
   </div>
